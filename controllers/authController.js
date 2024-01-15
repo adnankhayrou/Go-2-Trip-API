@@ -1,5 +1,4 @@
 const userModel = require('../models/userModel')
-// const role = require('../models/roleModel');
 const bcryptjs = require('bcryptjs');
 const sendMailToUser = require('../mailer/mailToUser');
 const { authRequest } = require('../requests/auth.request');
@@ -7,7 +6,6 @@ const tokenRequest = require('../requests/token.request');
 const {emailAndPasswordRequest} = require('../requests/emailAndPassword.request');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-
 
 
 async function register (req, res) {
