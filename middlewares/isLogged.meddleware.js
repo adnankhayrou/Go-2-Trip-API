@@ -2,7 +2,7 @@ const tokenRequest = require("../requests/token.request");
 
 function isLogged(req, res, next){
 
-    const token =req.cookies.authToken;
+    const token = req.cookies.authToken;
     
     if(!token) return next();
 
