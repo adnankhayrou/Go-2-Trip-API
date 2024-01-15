@@ -22,9 +22,43 @@ const getsubCategoryWithId = async (req, res) => {
     try {
         const sub_category = await subCategory.findById(id);
         if (!sub_category) {
-            return res.status(404).json({ error: "subCategory not found" });
+            return res.status(404).json({ error: "SubCategory not found" });
         }
-        res.json({success: "subCategory found successfully", data: sub_category,});
+        res.json({success: "SubCategory found successfully", data: sub_category,});
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: "Something went wrong" });
+    }
+};
+
+const updateSubCategory = async (req, res) => {
+    const {error} = subCategoryValidation(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    try {
+        const { id } = req.params;
+        const updatedSubCategory = await subCategory.findByIdAndUpdate(id, req.body);
+        if (!updatedSubCategory) {
+            return res.status(404).json({ error: "SubCategory not found" });
+        }
+        res.json({success: "SubCategory updated successfully", updatedSubCategory});
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: "Something went wrong" });
+    }
+};
+
+
+const deleteSubCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedSubCategory = await subCategory.findByIdAndDelete(id);
+        if (!deletedSubCategory) {
+            return res.status(404).json({ error: "SubCategory not found" });
+        }
+        res.json({success: "SubCategory deleted successfully", deletedSubCategory});
     } catch (e) {
         console.log(e);
         res.status(400).json({ error: "Something went wrong" });
@@ -36,5 +70,7 @@ const getsubCategoryWithId = async (req, res) => {
 module.exports = {
     createNewSubCategory,
     getsubCategoryWithId,
-    
+    updateSubCategory,
+    deleteSubCategory
+
 };
