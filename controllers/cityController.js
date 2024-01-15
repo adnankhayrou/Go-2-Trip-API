@@ -31,9 +31,29 @@ const getCityWithId = async (req, res) => {
     }
 };
 
+const updateCity = async (req, res) => {
+    const {error} = categoryValidation(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    try {
+        const { id } = req.params;
+        const updatedCity = await City.findByIdAndUpdate(id, req.body);
+        if (!updatedCity) {
+            return res.status(404).json({ error: "City not found" });
+        }
+        res.json({success: "City updated successfully", updatedCity});
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: "Something went wrong" });
+    }
+};
+
 
 
 module.exports = {
     createNewCity,
     getCityWithId,
+    updateCity,
 };
