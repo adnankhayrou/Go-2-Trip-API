@@ -1,5 +1,5 @@
 const userModel = require('../models/userModel')
-const role = require('../models/roleModel');
+// const role = require('../models/roleModel');
 const bcryptjs = require('bcryptjs');
 const sendMailToUser = require('../mailer/mailToUser');
 const { authRequest } = require('../requests/auth.request');
@@ -28,7 +28,7 @@ async function register (req, res) {
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword,
-        role: req.body.role,
+        role: "Seller",
     });
     try {
         const saveUser = await newUser.save();
@@ -106,7 +106,7 @@ async function login(req, res){
         return res.status(400).json({ error: error.details[0].message });
     } 
 
-    const user = await userModel.findOne({ email: req.body.email }).populate('role');
+    const user = await userModel.findOne({ email: req.body.email });
 
 
     if (!user){
@@ -139,7 +139,7 @@ async function forgotPassword(req, res){
     const {error} = emailAndPasswordRequest.EmailValidation(req.body);
     if (error) return res.status(400).json({ error: 'email must be a valid email' });
 
-    const user = await userModel.findOne({ email: req.body.email }).populate('role');
+    const user = await userModel.findOne({ email: req.body.email });
     if (!user) return res.status(400).json({ error: 'This Email is not found' });
 
     try{
@@ -147,7 +147,7 @@ async function forgotPassword(req, res){
             _id : user._id,
             name: user.name,
             email: user.email,
-            role: user.role.name,
+            role: user.role,
         }
 
         const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m'});

@@ -21,7 +21,7 @@ describe('register', () => {
             name: 'John Doe',
             email: 'johndoe@example.com',
             password: 'password123',
-            role: 'user',
+            role: 'Seller',
           }
         };
       
@@ -45,12 +45,12 @@ describe('register', () => {
           name: 'John Doe',
           email: 'johndoe@example.com',
           password: 'hashedPassword',
-          role: 'user',
+          role: 'Seller',
           _doc: { 
             _id: 'some_id',
             name: 'John Doe',
             email: 'johndoe@example.com',
-            role: 'user',
+            role: 'Seller',
           },
         };
         userModel.prototype.save.mockResolvedValue(mockSavedUser);
@@ -81,7 +81,7 @@ describe('register', () => {
             name: 'John Doe',
             email: 'test.com',
             password: 'hashedPassword',
-            role: 'user',
+            role: 'Seller',
         },
       };
   
@@ -111,7 +111,7 @@ describe('register', () => {
             name: 'Jane Smith',
             email: 'existing@example.com',
             password: 'newpassword123',
-            role: 'user',
+            role: 'Seller',
           },
         };
       

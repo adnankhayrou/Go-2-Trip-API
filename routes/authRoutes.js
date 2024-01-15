@@ -45,7 +45,7 @@ router.post('/resetpassword/:token',tokenMeddleware, authController.resetPasswor
  *               name: John Doe
  *               email: john@example.com
  *               password: password123
- *               role: user
+ *               role: Seller
  *     responses:
  *       '200':
  *         description: Registration successful
@@ -68,7 +68,7 @@ router.post('/resetpassword/:token',tokenMeddleware, authController.resetPasswor
  *                   example:
  *                     name: John Doe
  *                     email: john@example.com
- *                     role: user
+ *                     role: Seller
  *       '400':
  *         description: Bad request or user already exists
  *       '401':

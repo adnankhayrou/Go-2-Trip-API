@@ -5,7 +5,6 @@ function RegisterValidation(reqBody){
         name: Joi.string().required(),
         email: Joi.string().required().email(),
         password: Joi.string().required(),
-        role: Joi.string().required(),
     });
     return register.validate(reqBody);
 }

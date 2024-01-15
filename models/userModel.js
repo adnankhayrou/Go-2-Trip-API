@@ -1,4 +1,3 @@
-const Role = require('./roleModel');
 const mongoose = require('mongoose');
 
 const usersSchema = new mongoose.Schema({
@@ -25,16 +24,7 @@ const usersSchema = new mongoose.Schema({
         default: Date.now,
     },
     role: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Role',
-        required: true,
-        validate: {
-            validator: async function (v) {
-                const role = await Role.findById(v);
-                return role != null;
-            },
-            message: 'This Role not Exist',
-        },
+        type: String,
     }
 })
 
