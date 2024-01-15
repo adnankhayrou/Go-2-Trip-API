@@ -45,10 +45,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 const authRoutes = require('./routes/authRoutes')
 const userRoutes = require('./routes/userRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
+const subCategoryRoutes = require('./routes/subCategoryRoutes')
 const cityRoutes = require('./routes/cityRoutes')
 app.use('/api/auth/', authRoutes)
 app.use('/api/user/', userRoutes)
 app.use('/api/category/', categoryRoutes)
+app.use('/api/subCategory/', subCategoryRoutes)
 app.use('/api/city/', cityRoutes)
 
 app.listen(3000, ()=> console.log('Server Started'))
