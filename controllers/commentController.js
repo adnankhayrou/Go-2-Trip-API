@@ -31,8 +31,43 @@ const getCommentWithProducId = async (req, res) => {
     }
 };
 
+const updateComment = async (req, res) => {
+    const {error} = commentValidation(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    try {
+        const { id } = req.params;
+        const Comment = await comment.findByIdAndUpdate(id, req.body);
+        if (!Comment) {
+            return res.status(404).json({ error: "Comment not found" });
+        }
+        res.json({success: "Comment updated successfully", Comment});
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: "Something went wrong" });
+    }
+};
+
+const deleteComment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedComment = await comment.findByIdAndDelete(id);
+        if (!deletedComment) {
+            return res.status(404).json({ error: "Comment not found" });
+        }
+        res.json({success: "Comment deleted successfully", deletedComment});
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: "Something went wrong" });
+    }
+};
+
 module.exports = {
     createNewComment,
     getCommentWithProducId,
+    updateComment,
+    deleteComment
     
 };
