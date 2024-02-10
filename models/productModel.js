@@ -5,8 +5,8 @@ const schema = {
         type: String,
         required: true,
     },
-    image: {
-        type: Number,
+    images: {
+        type: [String],
         required: true,
     },
     description: {
