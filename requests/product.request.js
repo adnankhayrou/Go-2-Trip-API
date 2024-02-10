@@ -3,7 +3,7 @@ const Joi = require('joi');
 function productValidation(reqBody) {
     const AddProduct = Joi.object({
         name: Joi.string().required(),
-        images: Joi.array().items(Joi.string().uri()).required(),
+        images: Joi.array().items(Joi.string().uri()),
         description: Joi.string().required(),
         price: Joi.number().required(),
         phone: Joi.string().required(),
@@ -14,7 +14,7 @@ function productValidation(reqBody) {
     });
 
     const fileSchema = Joi.object({
-        mimetype: Joi.string().valid('image/jpeg', 'image/png').required(),
+        mimetype: Joi.string().valid('image/jpeg', 'image/png', 'image/gif').required(),
         size: Joi.number().max(5000000).required()
     });
 
