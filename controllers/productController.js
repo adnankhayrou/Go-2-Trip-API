@@ -60,18 +60,22 @@ const getAllProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-    const {error} = subCategoryValidation(req.body);
+    console.log(req.body);
+    const {error} = productValidation(req.body);
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
     }
 
     try {
+        const imagePaths = req.files.map(file => file.filename);
+        const productData = { ...req.body, images: imagePaths };
+
         const { id } = req.params;
-        const updatedSubCategory = await subCategory.findByIdAndUpdate(id, req.body);
-        if (!updatedSubCategory) {
+        const updatedProduct = await product.findByIdAndUpdate(id, productData);
+        if (!updatedProduct) {
             return res.status(404).json({ error: "Product not found" });
         }
-        res.json({success: "Product updated successfully", updatedSubCategory});
+        res.json({success: "Product updated successfully", updatedProduct});
     } catch (e) {
         console.log(e);
         res.status(400).json({ error: "Something went wrong" });
