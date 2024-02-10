@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 function commentValidation(reqBody){
     const AddComment = Joi.object({
-        name: Joi.string().required(),
+        content: Joi.string().required(),
         user_id: Joi.string().required(),
         product_id: Joi.string().required(),
     });
