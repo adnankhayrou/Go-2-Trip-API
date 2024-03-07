@@ -44,6 +44,25 @@ const getProductWithId = async (req, res) => {
     }
 };
 
+const getUserProducts = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const Product = await product.find({user_id: id})
+        .populate("user_id")
+        .populate("city_id")
+        .populate("category_id")
+        .populate("subCategory_id");
+        
+        if (!Product) {
+            return res.status(404).json({ error: "Product not found" });
+        }
+        res.json({success: "Product found successfully", data: Product});
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: "Something went wrong" });
+    }
+};
+
 
 const getAllProduct = async (req, res) => {
     try {
@@ -105,6 +124,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
     createNewProduct,
     getProductWithId,
+    getUserProducts,
     getAllProduct,
     updateProduct,
     deleteProduct,
