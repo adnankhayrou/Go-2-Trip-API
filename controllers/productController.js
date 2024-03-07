@@ -1,15 +1,19 @@
 const product = require("../models/productModel");
 const { productValidation } = require('../requests/product.request');
+const { storeImageGetPath } = require("../utils/tools");
 
 const createNewProduct = async (req, res) => {
-    
     const {error} = productValidation(req.body);
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
     }
 
     try {
-        const imagePaths = req.files.map(file => file.filename);
+        const getImagePaths = req.body.images.map(async file => {
+            return await storeImageGetPath(file);
+        });
+
+        const imagePaths = await Promise.all(getImagePaths);
         const productData = { ...req.body, images: imagePaths };
 
         const Product = await product.create(productData);

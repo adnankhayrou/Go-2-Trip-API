@@ -3,7 +3,7 @@ const Joi = require('joi');
 function productValidation(reqBody) {
     const AddProduct = Joi.object({
         name: Joi.string().required(),
-        images: Joi.array().items(Joi.string().uri()),
+        images: Joi.array(),
         description: Joi.string().required(),
         price: Joi.number().required(),
         phone: Joi.string().required(),

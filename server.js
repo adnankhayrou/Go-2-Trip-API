@@ -1,4 +1,5 @@
 require('dotenv').config()
+const path = require('path');
 
 const express = require('express');
 const app = express();
@@ -49,6 +50,13 @@ const subCategoryRoutes = require('./routes/subCategoryRoutes')
 const cityRoutes = require('./routes/cityRoutes')
 const productRoutes = require('./routes/productRoutes')
 const commentRoutes = require('./routes/commentRoutes')
+
+
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
+
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'images', 'uploads')));
+
 app.use('/api/auth/', authRoutes)
 app.use('/api/user/', userRoutes)
 app.use('/api/category/', categoryRoutes)
