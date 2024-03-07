@@ -84,14 +84,20 @@ const getAllProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     console.log(req.body);
+
     const {error} = productValidation(req.body);
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
     }
 
     try {
-        const imagePaths = req.files.map(file => file.filename);
-        const productData = { ...req.body, images: imagePaths };
+        const oldImages = req.body.oldImages
+        const getImagePaths = req.body.images.map(async file => {
+            return await storeImageGetPath(file);
+        });
+
+        const imagePaths = await Promise.all(getImagePaths);
+        const productData = {...req.body, images: [...imagePaths, ...oldImages] };
 
         const { id } = req.params;
         const updatedProduct = await product.findByIdAndUpdate(id, productData);

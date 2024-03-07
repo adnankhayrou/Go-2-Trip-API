@@ -13,6 +13,11 @@ app.use(cookieParser());
 
 const cors = require('cors');
 app.use(cors());
+// app.use(cors({
+//   origin: 'http://localhost:5173',
+//   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+// }));
 
 // Connect to MongoDB
 mongoose.connect(process.env.DATABASE_URL)
