@@ -17,10 +17,9 @@ const createNewCity = async (req, res) => {
     }
 };
 
-const getCityWithId = async (req, res) => {
-    const { id } = req.params;
+const getCities = async (req, res) => {
     try {
-        const city = await City.findById(id);
+        const city = await City.find();
         if (!city) {
             return res.status(404).json({ error: "City not found" });
         }
@@ -69,7 +68,7 @@ const deleteCity = async (req, res) => {
 
 module.exports = {
     createNewCity,
-    getCityWithId,
+    getCities,
     updateCity,
     deleteCity
 };

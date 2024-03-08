@@ -17,10 +17,9 @@ const createNewSubCategory = async (req, res) => {
     }
 };
 
-const getsubCategoryWithId = async (req, res) => {
-    const { id } = req.params;
+const getsubCategories = async (req, res) => {
     try {
-        const sub_category = await subCategory.findById(id);
+        const sub_category = await subCategory.find();
         if (!sub_category) {
             return res.status(404).json({ error: "SubCategory not found" });
         }
@@ -70,7 +69,7 @@ const deleteSubCategory = async (req, res) => {
 
 module.exports = {
     createNewSubCategory,
-    getsubCategoryWithId,
+    getsubCategories,
     updateSubCategory,
     deleteSubCategory
 
