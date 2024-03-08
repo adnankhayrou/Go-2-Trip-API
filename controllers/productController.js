@@ -97,7 +97,8 @@ const updateProduct = async (req, res) => {
         });
 
         const imagePaths = await Promise.all(getImagePaths);
-        const productData = {...req.body, images: [...imagePaths, ...oldImages] };
+        const today = new Date();
+        const productData = {...req.body, images: [...imagePaths, ...oldImages], updated_at: today };
 
         const { id } = req.params;
         const updatedProduct = await product.findByIdAndUpdate(id, productData);

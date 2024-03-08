@@ -40,6 +40,14 @@ const schema = {
         ref: "SubCategory",
         required: true,
     },
+    created_at: {
+        type: Date,
+        default: Date.now,
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now,
+    },
 };
 
 const productSchema = new mongoose.Schema(schema);

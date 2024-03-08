@@ -39,7 +39,8 @@ const updateCity = async (req, res) => {
 
     try {
         const { id } = req.params;
-        const updatedCity = await City.findByIdAndUpdate(id, req.body);
+        const today = new Date();
+        const updatedCity = await City.findByIdAndUpdate(id, { ...req.body, updated_at: today });
         if (!updatedCity) {
             return res.status(404).json({ error: "City not found" });
         }

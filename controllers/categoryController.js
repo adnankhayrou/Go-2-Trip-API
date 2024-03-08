@@ -17,10 +17,9 @@ const createNewCategory = async (req, res) => {
     }
 };
 
-const getCategoryWithId = async (req, res) => {
-    const { id } = req.params;
+const getCategories = async (req, res) => {
     try {
-        const category = await Category.findById(id);
+        const category = await Category.find();
         if (!category) {
             return res.status(404).json({ error: "Category not found" });
         }
@@ -39,7 +38,9 @@ const updateCategory = async (req, res) => {
 
     try {
         const { id } = req.params;
-        const updatedCategory = await Category.findByIdAndUpdate(id, req.body);
+        const today = new Date();
+        const updatedCategory = await Category.findByIdAndUpdate(id, { ...req.body, updated_at: today });
+
         if (!updatedCategory) {
             return res.status(404).json({ error: "Category not found" });
         }
@@ -68,7 +69,7 @@ const deleteCategory = async (req, res) => {
 
 module.exports = {
     createNewCategory,
-    getCategoryWithId,
+    getCategories,
     updateCategory,
     deleteCategory,
     

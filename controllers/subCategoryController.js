@@ -39,7 +39,8 @@ const updateSubCategory = async (req, res) => {
 
     try {
         const { id } = req.params;
-        const updatedSubCategory = await subCategory.findByIdAndUpdate(id, req.body);
+        const today = new Date();
+        const updatedSubCategory = await subCategory.findByIdAndUpdate(id, { ...req.body, updated_at: today });
         if (!updatedSubCategory) {
             return res.status(404).json({ error: "SubCategory not found" });
         }

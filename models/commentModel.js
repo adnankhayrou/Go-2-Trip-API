@@ -14,6 +14,14 @@ const schema = {
         ref: "Product",
         required: true,
     },
+    created_at: {
+        type: Date,
+        default: Date.now,
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now,
+    },
 };
 
 const commentSchema = new mongoose.Schema(schema);

@@ -39,7 +39,8 @@ const updateComment = async (req, res) => {
 
     try {
         const { id } = req.params;
-        const Comment = await comment.findByIdAndUpdate(id, req.body);
+        const today = new Date();
+        const Comment = await comment.findByIdAndUpdate(id, { ...req.body, updated_at: today });
         if (!Comment) {
             return res.status(404).json({ error: "Comment not found" });
         }
