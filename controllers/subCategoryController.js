@@ -33,6 +33,20 @@ const getsubCategories = async (req, res) => {
     }
 };
 
+const getAllsubCategories = async (req, res) => {
+    try {
+        const sub_category = await subCategory.find();
+        if (!sub_category) {
+            return res.status(404).json({ error: "SubCategory not found" });
+        }
+        res.json({success: "SubCategory found successfully", data: sub_category,});
+
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: "Something went wrong" });
+    }
+};
+
 const updateSubCategory = async (req, res) => {
     const {error} = subCategoryValidation(req.body);
     if (error) {
@@ -74,6 +88,7 @@ module.exports = {
     createNewSubCategory,
     getsubCategories,
     updateSubCategory,
-    deleteSubCategory
+    deleteSubCategory,
+    getAllsubCategories
 
 };
