@@ -4,7 +4,7 @@ const subCategoryController = require('../controllers/subCategoryController');
 
 
 router.post('/createSubCategory', subCategoryController.createNewSubCategory);
-router.get('/getSubCategories', subCategoryController.getsubCategories);
+router.get('/getSubCategories/:id', subCategoryController.getsubCategories);
 router.post('/updateSubCategory/:id', subCategoryController.updateSubCategory);
 router.delete('/deleteSubCategory/:id', subCategoryController.deleteSubCategory);
 

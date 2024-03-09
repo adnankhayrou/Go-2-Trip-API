@@ -18,12 +18,15 @@ const createNewSubCategory = async (req, res) => {
 };
 
 const getsubCategories = async (req, res) => {
+    const { id } = req.params;
     try {
-        const sub_category = await subCategory.find();
-        if (!sub_category) {
-            return res.status(404).json({ error: "SubCategory not found" });
+        if(id){
+            const sub_category = await subCategory.find({category_id: id});
+            if (!sub_category) {
+                return res.status(404).json({ error: "SubCategory not found" });
+            }
+            res.json({success: "SubCategory found successfully", data: sub_category,});
         }
-        res.json({success: "SubCategory found successfully", data: sub_category,});
     } catch (e) {
         console.log(e);
         res.status(400).json({ error: "Something went wrong" });
