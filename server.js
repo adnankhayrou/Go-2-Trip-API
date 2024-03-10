@@ -42,6 +42,11 @@ const options = {
 const specs = swaggerJsdoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
+
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'images', 'uploads')));
+
 // routes
 const authRoutes = require('./routes/authRoutes')
 const userRoutes = require('./routes/userRoutes')
@@ -50,12 +55,9 @@ const subCategoryRoutes = require('./routes/subCategoryRoutes')
 const cityRoutes = require('./routes/cityRoutes')
 const productRoutes = require('./routes/productRoutes')
 const commentRoutes = require('./routes/commentRoutes')
+const statisticsRoutes = require('./routes/statisticsRoute')
 
 
-app.use(express.json({ limit: '100mb' }));
-app.use(express.urlencoded({ limit: '100mb', extended: true }));
-
-app.use('/uploads', express.static(path.join(__dirname, 'public', 'images', 'uploads')));
 
 app.use('/api/auth/', authRoutes)
 app.use('/api/user/', userRoutes)
@@ -64,5 +66,6 @@ app.use('/api/subCategory/', subCategoryRoutes)
 app.use('/api/city/', cityRoutes)
 app.use('/api/product/', productRoutes)
 app.use('/api/comment/', commentRoutes)
+app.use('/api/statistics/', statisticsRoutes)
 
 app.listen(3000, ()=> console.log('Server Started'))
