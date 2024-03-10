@@ -31,6 +31,20 @@ const getCommentWithProducId = async (req, res) => {
     }
 };
 
+const getCommentWithcontent = async (req, res) => {
+    const { content } = req.query;
+    try {
+        const Comment = await comment.find({ content: { $regex: content } }).populate("user_id");
+        if (!Comment) {
+            return res.status(404).json({ error: "Comment not found" });
+        }
+        res.json({success: "Comment found successfully", data: Comment,});
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: "Something went wrong" });
+    }
+};
+
 const getAllComments = async (req, res) => {
     try {
         const Comment = await comment.find().populate("user_id");
@@ -83,6 +97,7 @@ module.exports = {
     getCommentWithProducId,
     getAllComments,
     updateComment,
-    deleteComment
+    deleteComment,
+    getCommentWithcontent
     
 };
