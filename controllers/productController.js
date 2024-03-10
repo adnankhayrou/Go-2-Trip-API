@@ -1,4 +1,5 @@
 const product = require("../models/productModel");
+const comment = require("../models/commentModel");
 const { productValidation } = require('../requests/product.request');
 const { storeImageGetPath } = require("../utils/tools");
 
@@ -119,6 +120,8 @@ const deleteProduct = async (req, res) => {
         if (!deletedProduct) {
             return res.status(404).json({ error: "Product not found" });
         }
+        await comment.deleteMany({ product_id: id });
+
         res.json({success: "Product deleted successfully", deletedProduct});
     } catch (e) {
         console.log(e);

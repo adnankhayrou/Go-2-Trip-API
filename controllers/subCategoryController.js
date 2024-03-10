@@ -1,4 +1,5 @@
 const subCategory = require("../models/subCategoryModel");
+const product = require("../models/productModel");
 const { subCategoryValidation } = require('../requests/subCategory.request');
 
 const createNewSubCategory = async (req, res) => {
@@ -75,6 +76,8 @@ const deleteSubCategory = async (req, res) => {
         if (!deletedSubCategory) {
             return res.status(404).json({ error: "SubCategory not found" });
         }
+        await product.deleteMany({ subCategory_id: id });
+
         res.json({success: "SubCategory deleted successfully", deletedSubCategory});
     } catch (e) {
         console.log(e);

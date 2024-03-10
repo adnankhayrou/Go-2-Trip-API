@@ -16,20 +16,6 @@ async function getAllUsers(req, res){
     }
 }
 
-// async function deleteUser(req, res){
-//     try {
-//         const { id } = req.params;
-//         const deletedUser = await userModel.findByIdAndDelete(id, {role: 'Seller'});
-//         if (!deletedUser) {
-//             return res.status(404).json({ error: "User not found" });
-//         }
-//         res.json({success: "User deleted successfully", deletedUser});
-//     } catch (e) {
-//         console.log(e);
-//         res.status(400).json({ error: "Something went wrong" });
-//     }
-// }
-
 async function deleteUser(req, res) {
     try {
         const { id } = req.params;

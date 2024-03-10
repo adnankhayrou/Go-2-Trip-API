@@ -1,4 +1,5 @@
 const City = require("../models/citiesModel");
+const product = require("../models/productModel");
 const { categoryValidation } = require('../requests/category.request');
 
 const createNewCity = async (req, res) => {
@@ -57,6 +58,8 @@ const deleteCity = async (req, res) => {
         if (!deletedCity) {
             return res.status(404).json({ error: "City not found" });
         }
+        await product.deleteMany({ city_id: id });
+
         res.json({success: "City deleted successfully", deletedCity});
     } catch (e) {
         console.log(e);
