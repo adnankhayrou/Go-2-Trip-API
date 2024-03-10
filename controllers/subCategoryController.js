@@ -35,7 +35,7 @@ const getsubCategories = async (req, res) => {
 
 const getAllsubCategories = async (req, res) => {
     try {
-        const sub_category = await subCategory.find();
+        const sub_category = await subCategory.find().populate("category_id");
         if (!sub_category) {
             return res.status(404).json({ error: "SubCategory not found" });
         }
