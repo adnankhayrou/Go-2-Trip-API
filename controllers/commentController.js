@@ -31,6 +31,19 @@ const getCommentWithProducId = async (req, res) => {
     }
 };
 
+const getAllComments = async (req, res) => {
+    try {
+        const Comment = await comment.find().populate("user_id");
+        if (!Comment) {
+            return res.status(404).json({ error: "Comment not found" });
+        }
+        res.json({success: "Comment found successfully", data: Comment,});
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: "Something went wrong" });
+    }
+};
+
 const updateComment = async (req, res) => {
     const {error} = commentValidation(req.body);
     if (error) {
@@ -68,6 +81,7 @@ const deleteComment = async (req, res) => {
 module.exports = {
     createNewComment,
     getCommentWithProducId,
+    getAllComments,
     updateComment,
     deleteComment
     

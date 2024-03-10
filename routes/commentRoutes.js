@@ -5,7 +5,8 @@ const commentController = require('../controllers/commentController');
 
 router.post('/createComment', commentController.createNewComment);
 router.get('/getComment/:productId', commentController.getCommentWithProducId);
-router.patch('/updateComment/:id', commentController.updateComment);
+router.get('/getAllComments', commentController.getAllComments);
+router.post('/updateComment/:id', commentController.updateComment);
 router.delete('/deleteComment/:id', commentController.deleteComment);
 
 
