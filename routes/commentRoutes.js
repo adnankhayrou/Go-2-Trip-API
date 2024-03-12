@@ -4,7 +4,7 @@ const commentController = require('../controllers/commentController');
 
 
 router.post('/createComment', commentController.createNewComment);
-router.get('/getComment/:productId', commentController.getCommentWithProducId);
+router.get('/getComments/:productId', commentController.getCommentWithProducId);
 router.get('/getAllComments', commentController.getAllComments);
 router.get('/commentwithContent', commentController.getCommentWithcontent);
 router.post('/updateComment/:id', commentController.updateComment);
