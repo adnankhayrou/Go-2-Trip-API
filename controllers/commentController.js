@@ -18,9 +18,10 @@ const createNewComment = async (req, res) => {
 };
 
 const getCommentWithProducId = async (req, res) => {
-    const { product_id } = req.params;
+    const { id } = req.params;
+    console.log(id);
     try {
-        const Comment = await comment.find(product_id).populate("user_id");
+        const Comment = await comment.find({product_id: id}).populate("user_id");
         if (!Comment) {
             return res.status(404).json({ error: "Comment not found" });
         }
