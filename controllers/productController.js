@@ -83,6 +83,41 @@ const getAllProduct = async (req, res) => {
     }
 };
 
+const productsFilter = async (req, res) => {
+    const { name, category_id, city_id } = req.query;
+    const query = {};
+
+    if (name) {
+        query.name = { $regex: name };
+    }
+
+    if (category_id) {
+        query.category_id = category_id;
+    }
+
+    if (city_id) {
+        query.city_id = city_id;
+    }
+
+    try {
+        const products = await product.find(query)
+            .populate("user_id")
+            .populate("city_id")
+            .populate("category_id")
+            .populate("subCategory_id");
+
+        if (!products || products.length === 0) {
+            return res.status(404).json({ error: "Products not found" });
+        }
+
+        res.json({ success: "Products found successfully", data: products });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
 const updateProduct = async (req, res) => {
     console.log(req.body);
 
@@ -136,6 +171,7 @@ module.exports = {
     getProductWithId,
     getUserProducts,
     getAllProduct,
+    productsFilter,
     updateProduct,
     deleteProduct,
 };
