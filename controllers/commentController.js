@@ -19,7 +19,6 @@ const createNewComment = async (req, res) => {
 
 const getCommentWithProducId = async (req, res) => {
     const { id } = req.params;
-    console.log(id);
     try {
         const Comment = await comment.find({product_id: id}).populate("user_id");
         if (!Comment) {

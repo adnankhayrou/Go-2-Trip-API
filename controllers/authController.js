@@ -10,24 +10,42 @@ require('dotenv').config();
 
 async function register (req, res) {
     const {error} = authRequest.RegisterValidation(req.body);
+    let genSalt, hashedPassword, newUser;
+
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
     }
 
-    const emailExists = await userModel.findOne({ email: req.body.email });
-    if (emailExists) {
-        return res.status(400).json({ error: 'This Email is already exists Try To Sign in' });
+    const users = await userModel.find();
+
+    if(users.length == 0){
+         genSalt = await bcryptjs.genSalt(10);
+         hashedPassword = await bcryptjs.hash(req.body.password, genSalt);
+
+         newUser = new userModel({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword,
+            role: "Admin",
+    });
+    }else{
+        const emailExists = await userModel.findOne({ email: req.body.email });
+        if (emailExists) {
+            return res.status(400).json({ error: 'This Email is already exists Try To Sign in' });
+        }
+
+        genSalt = await bcryptjs.genSalt(10);
+        hashedPassword = await bcryptjs.hash(req.body.password, genSalt);
+
+        newUser = new userModel({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword,
+            role: "Seller",
+        });
     }
 
-    const genSalt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(req.body.password, genSalt);
-
-    const newUser = new userModel({
-        name: req.body.name,
-        email: req.body.email,
-        password: hashedPassword,
-        role: "Seller",
-    });
+    
     try {
         const saveUser = await newUser.save();
         let userData = { ...saveUser._doc };
@@ -75,7 +93,6 @@ async function register (req, res) {
 
 }
 
-
 async function verifyEmail (req, res) {
     const token = req.params.token;
     if(!token) return res.status(401).json({ error: `Don't have access` });
@@ -96,7 +113,6 @@ async function verifyEmail (req, res) {
     }
 
 }
-
 
 async function login(req, res){
     const {error} = authRequest.LoginValidation(req.body);
@@ -190,9 +206,6 @@ async function forgotPassword(req, res){
 }
 
 async function resetPassword(req, res) {
-    // console.log(req.body);
-    // console.log('password lifel body = '+req.body.password);
-    // console.log('user id = '+req.user._id);
     const user = req.user;
     const { error } = emailAndPasswordRequest.PasswordValidation(req.body);
 
@@ -203,8 +216,6 @@ async function resetPassword(req, res) {
     try {
         const genSalt = await bcryptjs.genSalt(10);
         const hashingPassword = await bcryptjs.hash(req.body.password, genSalt);
-        // console.log('id =  '+ user._id);
-        // console.log('hash = '+ hashingPassword);
         const result = await userModel.updateOne(
             { _id: user._id },
             { password: hashingPassword }
