@@ -111,7 +111,7 @@ const productsFilter = async (req, res) => {
             .populate("subCategory_id");
 
         if (!products || products.length === 0) {
-            return res.status(404).json({ error: "Products not found" });
+            return res.json({ result: "Products not found", data: products });
         }
 
         res.json({ success: "Products found successfully", data: products });
