@@ -84,7 +84,7 @@ const getAllProduct = async (req, res) => {
 };
 
 const productsFilter = async (req, res) => {
-    const { name, category_id, city_id } = req.query;
+    const { name, category_id, subCategory_id, city_id } = req.query;
     const query = {};
 
     if (name) {
@@ -93,6 +93,10 @@ const productsFilter = async (req, res) => {
 
     if (category_id) {
         query.category_id = category_id;
+    }
+
+    if (subCategory_id) {
+        query.subCategory_id = subCategory_id;
     }
 
     if (city_id) {
