@@ -10,43 +10,31 @@ require('dotenv').config();
 
 async function register (req, res) {
     const {error} = authRequest.RegisterValidation(req.body);
-    let genSalt, hashedPassword, newUser;
 
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
     }
 
-    const users = await userModel.find();
+    
+    try {
+        const users = await userModel.find();
 
-    if(users.length == 0){
-         genSalt = await bcryptjs.genSalt(10);
-         hashedPassword = await bcryptjs.hash(req.body.password, genSalt);
+        let genSalt = await bcryptjs.genSalt(10);
+        let hashedPassword = await bcryptjs.hash(req.body.password, genSalt);
+        let role = users.length === 0 ? "Admin" : "Seller";
 
-         newUser = new userModel({
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword,
-            role: "Admin",
-    });
-    }else{
         const emailExists = await userModel.findOne({ email: req.body.email });
         if (emailExists) {
             return res.status(400).json({ error: 'This Email is already exists Try To Sign in' });
         }
 
-        genSalt = await bcryptjs.genSalt(10);
-        hashedPassword = await bcryptjs.hash(req.body.password, genSalt);
-
-        newUser = new userModel({
+        let newUser = new userModel({
             name: req.body.name,
             email: req.body.email,
             password: hashedPassword,
-            role: "Seller",
+            role: role,
         });
-    }
 
-    
-    try {
         const saveUser = await newUser.save();
         let userData = { ...saveUser._doc };
         delete userData.password;

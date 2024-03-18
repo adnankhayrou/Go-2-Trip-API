@@ -20,7 +20,7 @@ const createNewComment = async (req, res) => {
 const getCommentWithProducId = async (req, res) => {
     const { id } = req.params;
     try {
-        const Comment = await comment.find({product_id: id}).populate("user_id");
+        const Comment = await comment.find({product_id: id}).populate("user_id").sort({ created_at: -1 });
         if (!Comment) {
             return res.status(404).json({ error: "Comment not found" });
         }
@@ -34,7 +34,7 @@ const getCommentWithProducId = async (req, res) => {
 const getCommentWithcontent = async (req, res) => {
     const { content } = req.query;
     try {
-        const Comment = await comment.find({ content: { $regex: content } }).populate("user_id");
+        const Comment = await comment.find({ content: { $regex: content } }).populate("user_id").sort({ created_at: -1 });
         if (!Comment) {
             return res.status(404).json({ error: "Comment not found" });
         }
@@ -47,7 +47,7 @@ const getCommentWithcontent = async (req, res) => {
 
 const getAllComments = async (req, res) => {
     try {
-        const Comment = await comment.find().populate("user_id");
+        const Comment = await comment.find().populate("user_id").sort({ created_at: -1 });
         if (!Comment) {
             return res.status(404).json({ error: "Comment not found" });
         }

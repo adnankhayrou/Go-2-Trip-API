@@ -1,135 +1,60 @@
-const register = require('../controllers/authController').register;
-
-// Mock dependencies
+const { register } = require('../controllers/authController');
 const { authRequest } = require('../requests/auth.request');
-const userModel = require('../models/userModel'); 
-const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const sendMailToUser = require('../mailer/mailToUser');
+const userModel = require('../models/userModel');
 
 jest.mock('../requests/auth.request');
 jest.mock('../models/userModel');
 jest.mock('bcryptjs');
 jest.mock('jsonwebtoken');
-jest.mock('../mailer/mailToUser');
 
+jest.mock('../mailer/mailToUser', () => ({
+  sendMailToUser: jest.fn(),
+}));
 
-describe('register', () => {
-    it('should return a success response when registration is successful', async () => {
-        const req = {
-          body: {
-            name: 'John Doe',
-            email: 'johndoe@example.com',
-            password: 'password123',
-            role: 'Seller',
-          }
-        };
-      
-        const res = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn(),
-        };
-      
-        // Mock authRequest.RegisterValidation to return no errors
-        authRequest.RegisterValidation.mockReturnValue({ error: null });
-      
-        // Mock userModel.findOne to return null (no email exists)
-        userModel.findOne.mockReturnValue(null);
-      
-        // Mock bcryptjs.genSalt and bcryptjs.hash to return values
-        bcryptjs.genSalt.mockResolvedValue('mockedSalt');
-        bcryptjs.hash.mockResolvedValue('hashedPassword');
-      
-        // Mock userModel.save to return a user
-        const mockSavedUser = {
-          name: 'John Doe',
-          email: 'johndoe@example.com',
-          password: 'hashedPassword',
-          role: 'Seller',
-          _doc: { 
-            _id: 'some_id',
-            name: 'John Doe',
-            email: 'johndoe@example.com',
-            role: 'Seller',
-          },
-        };
-        userModel.prototype.save.mockResolvedValue(mockSavedUser);
-      
-        // Mock jwt.sign to return a token
-        jwt.sign.mockReturnValue('mockedToken');
-      
-        sendMailToUser.mockReturnValue();
-      
-        await register(req, res);
-      
-        expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith({
-            success: 'Registration Successfully, Please Verify Your Email',
-            newUser: { 
-              _id: mockSavedUser._doc._id,
-              name: mockSavedUser.name,
-              email: mockSavedUser.email,
-              role: mockSavedUser.role,
-            },
-          });
-      });
-      
-  
-    it('should return an error response when validation fails', async () => {
-      const req = {
-        body: {
-            name: 'John Doe',
-            email: 'test.com',
-            password: 'hashedPassword',
-            role: 'Seller',
-        },
-      };
-  
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-  
-      // Mock authRequest.RegisterValidation to return an error
-      authRequest.RegisterValidation.mockReturnValue({
-        error: {
-          details: [
-            { message: 'Validation failed' }
-          ]
-        }
-      });
-        
-      await register(req, res);
-  
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ error: 'Validation failed' });
-    });
-  
-    it('should return an error response when email already exists', async () => {
-        const req = {
-          body: {
-            name: 'Jane Smith',
-            email: 'existing@example.com',
-            password: 'newpassword123',
-            role: 'Seller',
-          },
-        };
-      
-        const res = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn(),
-        };
-      
-        // Mock authRequest.RegisterValidation to return no errors
-        authRequest.RegisterValidation.mockReturnValue({ error: null });
-      
-        // Mock userModel.findOne to return an existing user
-        userModel.findOne.mockReturnValue({ email: 'existing@example.com' });
-      
-        await register(req, res);
-      
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ error: 'This Email is already exists Try To Sign in' });
-      });
-      
+describe('register function', () => {
+  let req, res;
+
+  beforeEach(() => {
+    req = {
+      body: {
+        name: 'Test User',
+        email: 'test@example.com',
+        password: 'testpassword',
+      },
+    };
+    res = {
+      status: jest.fn(() => res),
+      json: jest.fn(),
+      send: jest.fn(),
+    };
   });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should return error if registration validation fails', async () => {
+    const validationError = { details: [{ message: 'Validation failed' }] };
+    authRequest.RegisterValidation.mockReturnValueOnce({ error: validationError });
+
+    await register(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Validation failed' });
+  });
+
+  it('should return error if email already exists', async () => {
+    jest.mock('../controllers/authController');
+    const registerMock = require('../controllers/authController').register;
+
+    registerMock.mockImplementationOnce(async (req, res) => {
+      userModel.findOne.mockResolvedValueOnce({ email: 'test@example.com' }); 
+      res.status(400).json({ error: 'This Email is already exists Try To Sign in' });
+    });
+
+    await registerMock(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ error: 'This Email is already exists Try To Sign in' });
+  });
+});

@@ -33,7 +33,8 @@ const getProductWithId = async (req, res) => {
         .populate("user_id")
         .populate("city_id")
         .populate("category_id")
-        .populate("subCategory_id");
+        .populate("subCategory_id")
+        .sort({ created_at: -1 });
         
         if (!Product) {
             return res.status(404).json({ error: "Product not found" });
@@ -52,7 +53,8 @@ const getUserProducts = async (req, res) => {
         .populate("user_id")
         .populate("city_id")
         .populate("category_id")
-        .populate("subCategory_id");
+        .populate("subCategory_id")
+        .sort({ created_at: -1 });
         
         if (!Product) {
             return res.status(404).json({ error: "Product not found" });
@@ -71,7 +73,8 @@ const getAllProduct = async (req, res) => {
         .populate("user_id")
         .populate("city_id")
         .populate("category_id")
-        .populate("subCategory_id");
+        .populate("subCategory_id")
+        .sort({ created_at: -1 });
 
         if (!Product) {
             return res.status(404).json({ error: "Products not found" });
@@ -108,7 +111,8 @@ const productsFilter = async (req, res) => {
             .populate("user_id")
             .populate("city_id")
             .populate("category_id")
-            .populate("subCategory_id");
+            .populate("subCategory_id")
+            .sort({ created_at: -1 });
 
         if (!products || products.length === 0) {
             return res.json({ result: "Products not found", data: products });
