@@ -4,7 +4,8 @@ const userController = require('../controllers/userController');
 
 
 router.get('/getAllUsers',userController.getAllUsers)
-router.get('/userwithName', userController.getUserWithName);
+router.get('/userwithName', userController.getUserWithName)
+router.post('/updateUser/:id',userController.updateUserName)
 router.delete('/deleteUser/:id',userController.deleteUser)
 
 
