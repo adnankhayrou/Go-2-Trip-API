@@ -66,7 +66,6 @@ const getUserProducts = async (req, res) => {
     }
 };
 
-
 const getAllProduct = async (req, res) => {
     try {
         const Product = await product.find()
@@ -124,7 +123,6 @@ const productsFilter = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
-
 
 const updateProduct = async (req, res) => {
     console.log(req.body);
