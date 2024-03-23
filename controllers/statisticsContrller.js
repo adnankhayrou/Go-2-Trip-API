@@ -16,7 +16,6 @@ const statistics = async (req, res) => {
         
         res.json({success: "Statistics founded successfully", comments, products, users, subCategories, categories, cities});
     } catch (e) {
-        console.log(e);
         res.status(400).json({ error: "Something went wrong" });
     }
 };

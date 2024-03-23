@@ -125,8 +125,6 @@ const productsFilter = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-    console.log(req.body);
-
     const {error} = productValidation(req.body);
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
