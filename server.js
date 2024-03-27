@@ -40,6 +40,7 @@ const options = {
     },
     apis: [ 
     'routes/commentRoutes.js', 
+    'routes/cityRoutes.js', 
     'routes/categoryRoutes.js',
     'routes/subCategoryRoutes.js',
     'routes/authRoutes.js'
