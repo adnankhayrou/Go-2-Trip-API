@@ -43,6 +43,8 @@ const options = {
     'routes/cityRoutes.js', 
     'routes/categoryRoutes.js',
     'routes/subCategoryRoutes.js',
+    'routes/userRoutes.js',
+    'routes/productRoutes.js',
     'routes/authRoutes.js'
     ],
 };
