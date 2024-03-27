@@ -53,8 +53,6 @@ router.delete('/deleteCategory/:id', categoryController.deleteCategory);
  *                   description: Error message.
  *     tags:
  *       - Categories
- *     security:
- *       - BearerAuth: []
  */
 
 
@@ -101,8 +99,6 @@ router.delete('/deleteCategory/:id', categoryController.deleteCategory);
  *                   description: Error message.
  *     tags:
  *       - Categories
- *     security:
- *       - BearerAuth: []
  */
 
 /**
@@ -165,8 +161,6 @@ router.delete('/deleteCategory/:id', categoryController.deleteCategory);
  *                   description: Error message.
  *     tags:
  *       - Categories
- *     security:
- *       - BearerAuth: []
  */
 
 /**
@@ -217,8 +211,6 @@ router.delete('/deleteCategory/:id', categoryController.deleteCategory);
  *                   description: Error message.
  *     tags:
  *       - Categories
- *     security:
- *       - BearerAuth: []
  */
 
 

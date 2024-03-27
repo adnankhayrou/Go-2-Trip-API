@@ -23,8 +23,6 @@ router.post('/resetpassword/:token',tokenMeddleware, authController.resetPasswor
  *     summary: Register a new user
  *     tags:
  *       - Authentication
- *     security:
- *       - BearerAuth: []
  *     requestBody:
  *       description: User registration details
  *       required: true
