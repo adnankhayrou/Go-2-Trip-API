@@ -38,7 +38,12 @@ const options = {
             }
         ]
     },
-    apis: ['routes/categoryRoutes.js', 'routes/commentRoutes.js', 'routes/authRoutes.js'],
+    apis: [ 
+    'routes/commentRoutes.js', 
+    'routes/categoryRoutes.js',
+    'routes/subCategoryRoutes.js',
+    'routes/authRoutes.js'
+    ],
 };
 
 const specs = swaggerJsdoc(options);
