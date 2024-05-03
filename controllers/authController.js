@@ -204,7 +204,7 @@ async function forgotPassword(req, res){
             to: req.body.email,
             subject: 'Reset your password',
             html: `<div class="con">
-            <h3> Click the link to reset your password </h3>
+            <h3>Hello ${user.name}, please click the link below to reset your password.</h3>
             <a class="btn" href="http://localhost:5173/resetPassword/${tokenWithHyphens}">Reset Your Password</a>
             </div>
                 <style>
