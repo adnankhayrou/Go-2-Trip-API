@@ -121,7 +121,51 @@ async function login(req, res){
     }
 
     if(!user.is_verified){
-        return res.status(400).json({ error: 'Please verify your email' });
+
+        let payload = {
+            _id : user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+        }
+
+        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m'});
+        const tokenWithHyphens = token.replace(/\./g, '~');
+        let mailType = {
+            from: 'Allo.Media@livraison.com',
+            to: req.body.email,
+            subject: 'Account activation link',
+            html: `<div class="con">
+            <h2>Hello ${user.name}</h2>
+            <h3> Click the link to activate your account </h3>
+            <a class="btn" href="http://localhost:5173/verifyEmail/${tokenWithHyphens}">Active Your Account</a>
+            </div>
+                <style>
+                    .con{
+                        display: flex;
+                        align-items: center;
+                        flex-direction: column;
+                        justify-content: center;
+                        height: 100vh;
+                    }
+                    .btn{
+                        background-color: #4CAF50;
+                        font-size: 16px;
+                        font-weight: bold;
+                        border-radius: 30px;
+                        border-width: 0;
+                        margin-top: 15px;
+                        padding: 10px 32px;
+                        color: white;
+                        text-decoration: none; 
+                    }
+                </style>`,
+            };
+        sendMailToUser(mailType);
+
+        return res.status(400).json({ error: 'Please check your email to verify your account' });
+
+
     } 
 
     const token = jwt.sign({ user}, process.env.ACCESS_TOKEN_SECRET);
